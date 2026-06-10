@@ -60,7 +60,8 @@ class LoginView(APIView):
     """
     POST /api/auth/login/  body: { "email": "...", "password": "..." }
 
-    Validates credentials and returns JWT tokens. No OTP / 2FA — pure JWT auth.
+    Validates credentials and returns JWT tokens, unless the user has 2FA
+    enabled. In that case an email OTP challenge is issued first.
     """
     permission_classes = [permissions.AllowAny]
 
@@ -71,7 +72,20 @@ class LoginView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
-        user   = serializer.validated_data['user']
+        user = serializer.validated_data['user']
+        if user.two_factor_enabled:
+            from .services.otp import issue_challenge, send_otp, mask_email
+            challenge, code = issue_challenge(user)
+            send_otp(user, code)
+            return Response({
+                'message':      'Enter the 6-digit code we just emailed you.',
+                'requires_otp': True,
+                'purpose':      'login',
+                'challenge_id': str(challenge.id),
+                'masked_email': mask_email(user.email),
+                'email':        user.email,
+            }, status=status.HTTP_200_OK)
+
         tokens = get_tokens_for_user(user)
         return Response({
             'message': 'Login successful.',

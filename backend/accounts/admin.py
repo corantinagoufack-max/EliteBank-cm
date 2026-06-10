@@ -7,13 +7,13 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import User, Beneficiary, Notification, OTPChallenge
 
-# ── Admin site branding ───────────────────────────────────────────────────────
+#  Admin site branding 
 admin.site.site_header = "Elite Bank Administration"
 admin.site.site_title  = "Elite Bank Admin"
 admin.site.index_title = "Administration Dashboard"
 
 
-# ── Forms for the admin ───────────────────────────────────────────────────────
+#  Forms for the admin 
 
 class UserCreationForm(forms.ModelForm):
     """Used in the "Add User" admin page."""
@@ -63,14 +63,14 @@ class UserChangeForm(forms.ModelForm):
         fields = '__all__'
 
 
-# ── User admin ────────────────────────────────────────────────────────────────
+#  User admin 
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     form     = UserChangeForm
     add_form = UserCreationForm
 
-    # ── List view ─────────────────────────────────────────────────────────────
+    # ── List view 
     list_display = (
         'avatar_thumbnail', 'full_name', 'email', 'phone_number',
         'balance_formatted', 'verified_badge', 'notifications_badge',
@@ -86,7 +86,7 @@ class UserAdmin(BaseUserAdmin):
     ordering      = ('-date_joined',)
     list_per_page = 25
 
-    # ── Detail view ───────────────────────────────────────────────────────────
+    # ── Detail view 
     readonly_fields = (
         'id', 'date_joined', 'updated_at',
         'avatar_preview', 'password_changed_at',
@@ -129,14 +129,14 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
 
-    # ── Bulk actions ──────────────────────────────────────────────────────────
+    # ── Bulk actions 
     actions = [
         'action_verify', 'action_unverify',
         'action_activate', 'action_deactivate',
         'action_enable_email_notifications', 'action_disable_email_notifications',
     ]
 
-    # ── Custom columns ────────────────────────────────────────────────────────
+    #  Custom columns 
 
     def avatar_thumbnail(self, obj):
         avatar = getattr(obj, 'avatar_url', '') or ''
@@ -205,7 +205,7 @@ class UserAdmin(BaseUserAdmin):
         )
     notifications_badge.short_description = 'Alerts'
 
-    # ── Actions ───────────────────────────────────────────────────────────────
+    #  Actions 
 
     @admin.action(description='✓ Mark selected users as Verified')
     def action_verify(self, request, queryset):
