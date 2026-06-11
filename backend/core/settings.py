@@ -35,10 +35,17 @@ DEBUG      = _cfg('DEBUG', default='True', cast=bool)
 
 ALLOWED_HOSTS = [h.strip() for h in _cfg('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')]
 
+#  Jazzmin fallback
+try:
+    import jazzmin  # noqa: F401
+    _JAZZMIN_AVAILABLE = True
+except ImportError:
+    _JAZZMIN_AVAILABLE = False
+
 #  Apps 
 INSTALLED_APPS = [
     # Jazzmin must come BEFORE django.contrib.admin
-    'jazzmin',
+    *(['jazzmin'] if _JAZZMIN_AVAILABLE else []),
 
     'django.contrib.admin',
     'django.contrib.auth',
