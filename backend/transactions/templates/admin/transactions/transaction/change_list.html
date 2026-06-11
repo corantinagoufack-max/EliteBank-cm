@@ -1,0 +1,90 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+{% block content %}
+<style>
+    .transaction-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.4rem;
+    }
+
+    .transaction-summary-card {
+        border: 1px solid #dfe2e6;
+        border-radius: 0.75rem;
+        background: #ffffff;
+        padding: 1rem 1.1rem;
+        box-shadow: 0 1px 4px rgba(16, 24, 40, 0.04);
+    }
+
+    .transaction-summary-card h3 {
+        margin: 0 0 0.35rem;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #111827;
+        letter-spacing: -0.01em;
+    }
+
+    .transaction-summary-card p {
+        margin: 0;
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .transaction-summary-card .meta {
+        margin-top: 0.45rem;
+        color: #475569;
+        font-size: 0.92rem;
+    }
+
+    .transaction-summary-card span.badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.8rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #111827;
+        background: #f8fafc;
+    }
+</style>
+
+<div class="transaction-summary-grid">
+    <div class="transaction-summary-card">
+        <h3>{% trans "Total transactions" %}</h3>
+        <p>{{ totals.count|default:0 }}</p>
+        <div class="meta">{% trans "Rows shown by current filters" %}</div>
+    </div>
+    <div class="transaction-summary-card">
+        <h3>{% trans "Total volume" %}</h3>
+        <p><span class="badge">XAF</span> {{ totals.volume|default:0|floatformat:0 }}</p>
+        <div class="meta">{% trans "Sum of transaction amounts" %}</div>
+    </div>
+    <div class="transaction-summary-card">
+        <h3>{% trans "Completed" %}</h3>
+        <p>{{ totals.completed|default:0 }}</p>
+        <div class="meta">{% trans "Settled transactions" %}</div>
+    </div>
+    <div class="transaction-summary-card">
+        <h3>{% trans "Pending" %}</h3>
+        <p>{{ totals.pending|default:0 }}</p>
+        <div class="meta">{% trans "Awaiting confirmation" %}</div>
+    </div>
+    <div class="transaction-summary-card">
+        <h3>{% trans "Failed" %}</h3>
+        <p>{{ totals.failed|default:0 }}</p>
+        <div class="meta">{% trans "Transaction errors" %}</div>
+    </div>
+    <div class="transaction-summary-card">
+        <h3>{% trans "Deposits" %}</h3>
+        <p>{{ totals.deposits|default:0 }}</p>
+        <div class="meta">{% trans "Inbound funds" %}</div>
+    </div>
+</div>
+
+{{ block.super }}
+{% endblock %}

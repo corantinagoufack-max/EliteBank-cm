@@ -30,6 +30,10 @@ class HasPaymentReferenceFilter(admin.SimpleListFilter):
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
+    list_select_related = ('sender', 'recipient')
+    list_display_links = ('reference_display',)
+    date_hierarchy = 'created_at'
+    change_list_template = 'admin/transactions/transaction/change_list.html'
 
     # ── List view ─────────────────────────────────────────────────────────────
     list_display = (
@@ -51,6 +55,7 @@ class TransactionAdmin(admin.ModelAdmin):
     )
     ordering       = ('-created_at',)
     list_per_page  = 30
+    raw_id_fields  = ('sender', 'recipient')
 
     # ── Detail view ───────────────────────────────────────────────────────────
     readonly_fields = (
