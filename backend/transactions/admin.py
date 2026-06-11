@@ -33,7 +33,6 @@ class TransactionAdmin(admin.ModelAdmin):
     list_select_related = ('sender', 'recipient')
     list_display_links = ('reference_display',)
     date_hierarchy = 'created_at'
-    change_list_template = 'admin/transactions/transaction/change_list.html'
 
     # ── List view ─────────────────────────────────────────────────────────────
     list_display = (
