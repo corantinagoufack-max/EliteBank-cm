@@ -273,7 +273,7 @@ Logout:  blacklists refresh token server-side, clears local storage,
 
 ## 📌 Live URLs
 
-- **🌐 Live app:** <https://elite-bank-cm.vercel.app>
+- **🌐 Live app:** <https://elitebank-frontend.vercel.app/dashboard>
 - **🔧 Live API:** <https://elite-bank-api.onrender.com>
 - **📘 Swagger docs:** <https://elite-bank-api.onrender.com/api/docs/>
 - **🛠 Admin:** <https://elite-bank-api.onrender.com/admin/>
